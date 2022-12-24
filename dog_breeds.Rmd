@@ -1,0 +1,69 @@
+---
+title: "dog_breeds"
+output: html_document
+date: "2022-12-24"
+---
+
+```{r}
+library(tidymodels)
+library(tidyverse)
+```
+
+
+```{r}
+tuesdata <- tidytuesdayR::tt_load(2022, week = 5)
+```
+```{r}
+glimpse(tuesdata$breed_traits)
+```
+
+```{r}
+View(tuesdata$breed_traits)
+View(tuesdata$breed_rank)
+View(tuesdata$trait_description)
+```
+
+```{r}
+breed_t <- tuesdata$breed_traits %>% 
+  mutate(Breed = gsub('[^[:alnum:] ]','',Breed))
+
+write_csv(breed_t,file = "breed_t")
+write_csv(breed_r, file = "breed_r")
+  
+```
+
+```{r}
+breed_r <- tuesdata$breed_rank %>% 
+  mutate(Breed = gsub(" ","",Breed)) %>% 
+  mutate(Breed = gsub('[^[:alnum:] ]','',Breed))
+```
+
+```{r}
+dogs <- breed_t %>% inner_join(breed_r)
+```
+```{r}
+dogs$`Coat Type` <- factor(dogs$`Coat Type`)
+dogs$`Coat Length`<- factor(dogs$`Coat Length`)
+```
+
+```{r}
+dogs <- dogs %>% 
+  select(-c('links','Image'))
+```
+
+```{r}
+# remove NAs
+na.omit(dogs)
+
+```
+
+```{r}
+dogs %>% 
+  ggplot(ae)
+```
+
+
+
+
+
+
